@@ -9,26 +9,37 @@ import (
 	"time"
 )
 
-const GATEWAY_URL = "http://gateway"
+const (
+	GATEWAY_URL = "http://gateway/u"
+	CACHE_FILE  = "./router.cache"
+)
 
 func main() {
-	res := execShellFile("/root/new.sh")
+	res := execShellFile("./new.sh")
 	devs := strings.Split(res, " ")
-	t := time.Now()
+	t := time.Now().UTC()
+	t = t.Add(8 * time.Hour)
 	curTime := t.Format("2006-01-02 15:04:05")
-	for idx, dev := range devs {
-		fmt.Printf("idx %d, val %s", idx, dev)
-		msg := utils.BuildMsg(
-			100,
-			"http://baidu.com",
-			"有人连接啦",
-			"router-notify",
-			dev,
-			curTime,
-			"",
-		)
-		utils.SendToGateway(GATEWAY_URL, msg)
+	tmpMap := make(map[interface{}]interface{})
+	oldMap, _ := utils.LoadFromFile(CACHE_FILE)
+	for _, dev := range devs {
+		kvs := strings.Split(dev, "#")
+		if oldMap[kvs[1]] != kvs[0] {
+			// new
+			msg := utils.BuildMsg(
+				100,
+				"http://router",
+				"有人连接啦",
+				"router-notify",
+				kvs[0],
+				curTime,
+				kvs[1],
+			)
+			utils.SendToGateway(GATEWAY_URL, msg)
+		}
+		tmpMap[kvs[1]] = kvs[0]
 	}
+	utils.SaveToFile(CACHE_FILE, tmpMap)
 
 }
 

@@ -3,8 +3,8 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"net/http"
 	"log"
+	"net/http"
 )
 
 func BuildMsg(userId int64, url string, first string, send string, text string, time string, remark string) (msg *MsgTemplate) {
@@ -17,6 +17,9 @@ func BuildMsg(userId int64, url string, first string, send string, text string, 
 			Text:  MsgVC{Value: text, Color: "#172177"},
 			Time:  MsgVC{Value: time, Color: "#172177"},
 		},
+	}
+	if remark != "" {
+		msg.Data.Remark = MsgVC{Value: remark, Color: "#172177"}
 	}
 	return
 }

@@ -24,6 +24,6 @@ do
     fi
 done;
 
-c_d=`cat /tmp/dhcp.leases | awk '{print $2"-"$4}'|grep -i -E "$total"`
+c_d=`cat /tmp/dhcp.leases | awk '{print $4"#"$2}'|grep -i -E "$total"`
 
 echo $c_d
