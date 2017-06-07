@@ -7,10 +7,10 @@ import (
 	"net/http"
 )
 
-func BuildMsg(userId int64, url string, first string, send string, text string, time string, remark string) (msg *MsgTemplate) {
+func BuildMsg(id int64, url string, first string, send string, text string, time string, remark string) (msg *MsgTemplate) {
 	msg = &MsgTemplate{
-		URL:    url,
-		UserId: userId,
+		URL: url,
+		Id:  id,
 		Data: MsgData{
 			First: MsgVC{Value: first, Color: "#172177"},
 			Send:  MsgVC{Value: send, Color: "#172177"},

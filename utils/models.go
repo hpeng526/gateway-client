@@ -1,9 +1,9 @@
 package utils
 
 type MsgTemplate struct {
-	UserId int64   `json:"user_id"`
-	URL    string  `json:"url"`
-	Data   MsgData `json:"data"`
+	Id   int64   `json:"id"`
+	URL  string  `json:"url"`
+	Data MsgData `json:"data"`
 }
 
 type MsgData struct {
